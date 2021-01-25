@@ -8,7 +8,6 @@ use App\sysuser;
 
 class HomeController extends Controller
 {
-
     public function index(Request $request)
     {
         return view('layout.app');
@@ -22,34 +21,34 @@ class HomeController extends Controller
         }else{
             return redirect('/');
         }
-    }
+    }   
 
     public function masuk(Request $request)
-    {    
-        $user_name  = $request->input('txtuser');
-        $pwd        = sha1($request->input('txtpass'));
+    {
+        $user_name = $request->input('txtuser');
+        $pwd = sha1($request->input('txtpass'));
         $sys_user = new sysuser();
         $data = $sys_user::where([
-            ['uname', '=', $user_name],['upass', '=', $pwd]
-            ])->get();
+            ['uname','=',$user_name],['upass','=',$pwd]
+        ])->get();
         $user = NULL;
-        foreach ($data as $key => $value) {
+        foreach($data as $key => $value){
             $user = $value->uname;
             $nama = $value->namalengkap;
             $email = $value->email;
         }
         if($user){
             session([
-                'userid'=> $user,
-                'nama'=> $nama,
-                'email'=> $email
+                'userid'=>$user,
+                'nama'=>$nama,
+                'email'=>$email
             ]);
-            $session = $request->session()->get('userid');
+            $session=$request->session()->get('userid');
             if($session){
                 return redirect('/');
-            }
+          }
         }else{
-            return redirect('/');
+                return redirect('/');
         }
     }
 }
